@@ -28,7 +28,41 @@ O M1 coordena e desbloqueia, não centraliza o código.
 
 ---
 
-## 3. Princípios de trabalho
+## 3. Stack e ferramentas por membro
+
+Cada membro instala e usa apenas o que está na sua linha. Ferramenta partilhada: GitHub + VS Code.
+
+| ID | Linguagens | Frameworks / Bibliotecas | Ferramentas / Serviços | Instala na semana 1 |
+|----|-----------|--------------------------|------------------------|---------------------|
+| M1 | Markdown | — | GitHub (Projects, PRs, branch protection), Git CLI, WhatsApp/Discord para standup | Git |
+| M2 | Python 3.11+ | Pandas, pytest | FIRMS API/Downloads, CSV/JSON, `venv` | Python + `pip install pandas pytest` |
+| M3 | TypeScript (Node 20+) | Express | PostgreSQL/PostGIS (Sprint 2; fallback JSON/SQLite), Vitest + Supertest, npm | Node.js + npm |
+| M4 | TypeScript (React) | Next.js 14+, Leaflet + react-leaflet, Recharts | npm, `npm run dev`/`build` | Node.js (mesma do M3) |
+| M5 | — | Figma ou wireframe simples | Markdown, screenshots, vídeo 90s | Nenhum extra |
+
+### 3.1 Notas de stack (do plano do projecto)
+
+- **M2 é o único dono de Python.** Ninguém escreve `pipeline` em TypeScript nem Python no `frontend/`/`backend/`. Se M3 precisar de dados, consome a API ou o JSON gerado por M2.
+- **M3 escreve o backend em Node/Express/TypeScript.** Não duplica a lógica científica (validação de regras) — isso é de M2. M3 só lê, valida parâmetros e pagina.
+- **M4 escreve só em Next.js/React/TypeScript.** Não lê CSV nem liga directamente à DB — só consome `/api/*`.
+- **PostgreSQL + PostGIS entram no Sprint 2 (M3).** No Sprint 1, M3 trabalha com `detections_mock.json` lido directamente pelo Express. O schema SQL é escrito no Sprint 1 mas não exige servidor ativo.
+- **Leaflet é obrigatório, Recharts depende do tempo.** Se F08/F09 atrasarem, M4 entrega mapa + filtros primeiro e o gráfico fica para Sprint 2.
+- **Ferramentas de teste por dono:** `pytest` só em `data-pipeline/tests/`, `Vitest` só em `backend/tests/`, frontend testado manualmente com checklist em F12.
+- **CI (GitHub Actions) — M1 cria, M2/M3 só escrevem os comandos:** job Python = `pip install -r data-pipeline/requirements.txt && pytest`, job Node = `npm ci && npm test && npm run build`. Sem linters pesados na semana 1.
+
+### 3.2 Proibições por papéis
+
+| Nunca fazer | Quem |
+|---|---|
+| Commitar `.env` ou MAP_KEY | Todos |
+| Escrever código no módulo de outro membro | Todos |
+| Push directo em `main` | Todos |
+| Adicionar dependência nova sem avisar o M1 | M2-M5 |
+| Instalar Postgres se F09/estiver mock-ok | M3 (Sprint 1) |
+
+---
+
+## 4. Princípios de trabalho
 
 1. 1 issue = 1 entrega verificável com dono único.
 2. 1 branch por issue, vida < 24h. Sem push directo na `main`.
@@ -44,7 +78,7 @@ O M1 coordena e desbloqueia, não centraliza o código.
 
 ---
 
-## 4. Mapa de dependências
+## 5. Mapa de dependências
 
 ```
 F04 (FIRMS) -> F05 (amostras) -> F06 (pipeline) -> integração real
@@ -59,11 +93,11 @@ Regra: ninguém espera pela FIRMS para codar. Usa-se mock até F05 fechar.
 
 ---
 
-## 5. Sprint 1 — Fundação e validação (17–23 Out 2026)
+## 6. Sprint 1 — Fundação e validação (17–23 Out 2026)
 
 Objectivo: repo organizado, acesso FIRMS verificado, pipeline inicial, mapa mock, demo mínima.
 
-### 5.1 M1 — Coordenação
+### 6.1 M1 — Coordenação
 
 | ID | Tarefa | Entrega | Aceitação | Est. |
 |----|--------|---------|-----------|------|
@@ -73,7 +107,7 @@ Objectivo: repo organizado, acesso FIRMS verificado, pipeline inicial, mapa mock
 | F12a | Board e rituais | Board Todo/In Progress/Done, standup async ontem/hoje/bloqueio | Board reflecte realidade diária | 0.5h/dia |
 | HYG | Higiene | `docs/known_issues.md`, `data/samples/README.md`, `docs/FIRMS_ACCESS.md` moldes | M2 só preenche | 1h |
 
-### 5.2 M2 — Dados
+### 6.2 M2 — Dados
 
 | ID | Tarefa | Entrega | Aceitação | Est. |
 |----|--------|---------|-----------|------|
@@ -89,7 +123,7 @@ Passos M2 em detalhe:
 4. Implementar validação: lat [-90,90], lon [-180,180], data parseável, campos opcionais não crasham.
 5. Nunca apagar rejeitados sem contar motivo.
 
-### 5.3 M3 — Backend + DB
+### 6.3 M3 — Backend + DB
 
 | ID | Tarefa | Entrega | Aceitação | Est. |
 |----|--------|---------|-----------|------|
@@ -101,7 +135,7 @@ Contrato F09:
 - `limit` default 100, máx 1000. `bbox` inválido -> 400 `{error,code,details}`.
 - `GET /api/meta`: `{periodo, produtos, last_import, is_sample}`.
 
-### 5.4 M4 — Frontend
+### 6.4 M4 — Frontend
 
 | ID | Tarefa | Entrega | Aceitação | Est. |
 |----|--------|---------|-----------|------|
@@ -113,7 +147,7 @@ Regras M4:
 - Legenda sempre = cores reais.
 - Série temporal distingue `0` (zero obs.) vs `null` (sem dados).
 
-### 5.5 M5 — UX/Testes/Docs
+### 6.5 M5 — UX/Testes/Docs
 
 | ID | Tarefa | Entrega | Aceitação | Est. |
 |----|--------|---------|-----------|------|
@@ -125,7 +159,7 @@ Critérios de conclusão Sprint 1: repo organizado, FIRMS verificado ou bloqueio
 
 ---
 
-## 6. Sprint 2 — Integração do fluxo (pós 23 Out)
+## 7. Sprint 2 — Integração do fluxo (pós 23 Out)
 
 Objectivo: trocar mock por real onde houver dados, ligar ponta-a-ponta.
 
@@ -139,7 +173,7 @@ Entrega Sprint 2: `sample.csv real -> mapa filtrável` funciona.
 
 ---
 
-## 7. Sprint 3 — Validação e apresentação
+## 8. Sprint 3 — Validação e apresentação
 
 Objectivo: demo estável e honesta.
 
@@ -153,7 +187,7 @@ Mensagem central: tornar observações comparáveis preservando origem e limita�
 
 ---
 
-## 8. Backlog completo e prioridades
+## 9. Backlog completo e prioridades
 
 | ID | Requisito | Prioridade | Dono | Sprint |
 |----|-----------|------------|------|--------|
@@ -176,7 +210,7 @@ Mensagem central: tornar observações comparáveis preservando origem e limita�
 
 ---
 
-## 9. Git e colaboração — resumo operacional
+## 10. Git e colaboração — resumo operacional
 
 1. `git pull origin main` -> `git checkout -b feat/nome` -> muda pouco -> testa -> `commit` -> `push` -> PR -> 1 approval -> merge -> delete branch.
 2. Branches: `feat/*`, `fix/*`, `docs/*`, `test/*`, `chore/*`.
@@ -186,7 +220,7 @@ Mensagem central: tornar observações comparáveis preservando origem e limita�
 
 ---
 
-## 10. Testes por dono
+## 11. Testes por dono
 
 - M2 `pytest`: lat/lon inválidos rejeitados, data má rejeitada, opcional ausente não crasha, contagem rejeitados correcta, proveniência preservada.
 - M3 Vitest/Supertest: health 200, bbox mau 400, limit cap, paginação, erro JSON consistente.
@@ -196,7 +230,7 @@ Mensagem central: tornar observações comparáveis preservando origem e limita�
 
 ---
 
-## 11. Riscos e cortes
+## 12. Riscos e cortes
 
 | Risco | Sinal | Corte M1 |
 |-------|-------|----------|
@@ -210,7 +244,7 @@ Regra de ouro dia 21: se `CSV real -> mapa filtrável` não passa, cortam-se mat
 
 ---
 
-## 12. Checklists finais
+## 13. Checklists finais
 
 **Demo gate (F12):** builds verdes, offline com samples testado, banner TESTE/REAL visível, filtros actualizam mapa+gráfico, vazio mostra mensagem, erro API mostra mensagem, metodologia 1 slide, vídeo+screenshots backup, linguagem `detecções` não `incêndios`, `known_issues.md` actualizado.
 
