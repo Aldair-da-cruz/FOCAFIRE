@@ -28,7 +28,7 @@ def normalizar(caminho_csv):
                 )
             continue                       
 
-        # --- linha válida: enriquece com campos novos ---
+        
         lat = float(row["latitude"])
         lon = float(row["longitude"])
         cell_lat, cell_lon = calcular_celula(lat, lon)
