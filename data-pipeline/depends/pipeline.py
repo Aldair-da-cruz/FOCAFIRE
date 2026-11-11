@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 from .calcular_celula import calcular_celula
 from .normalizar_confidence import normalizar_confidence
 from .validar_linha import validar_linha
@@ -36,8 +37,8 @@ def normalizar(caminho_csv, sensor):
             "latitude": lat,
             "longitude": lon,
             "acq_date": str(row["acq_date"]),
-            "sensor": row,
-            "confidence_normalizada": normalizar_confidence(row.get("confidence"), sensor),
+            "sensor": row["instrument"],
+            "confidence_normalizada": normalizar_confidence(row.get("confidence"), row.get("instrument")),
             "cell_lat": cell_lat,
             "cell_lon": cell_lon,
             "raw_properties": row.to_dict(),  
