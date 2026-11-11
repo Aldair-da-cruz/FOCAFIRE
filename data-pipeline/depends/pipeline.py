@@ -1,13 +1,13 @@
 import pandas as pd
-
+import streamlit as st
 
 from .calcular_celula import calcular_celula
 from .normalizar_confidence import normalizar_confidence
 from .validar_linha import validar_linha
 
-def normalizar(caminho_csv, sensor):
+def normalizar(caminho_csv):
     df = pd.read_csv(caminho_csv)
-
+   
     relatorio = {
         "total_lidas": len(df),
         "validas": 0,
@@ -46,4 +46,4 @@ def normalizar(caminho_csv, sensor):
         linhas_validas.append(linha_nova)
 
     relatorio["validas"] = len(linhas_validas)
-    return pd.DataFrame(linhas_validas), relatorio
+    return linhas_validas, relatorio

@@ -3,10 +3,10 @@ import os
 import datetime
 
 load_dotenv()
-LAT_MIN = os.getenv("LAT_MIN")
-LAT_MAX = os.getenv("LAT_MAX")
-LON_MIN = os.getenv("LON_MIN")
-LON_MAX = os.getenv("LON_MAX")
+LAT_MIN = float(os.getenv("LAT_MIN"))
+LAT_MAX = float(os.getenv("LAT_MAX"))
+LON_MIN = float(os.getenv("LON_MIN"))
+LON_MAX = float(os.getenv("LON_MAX"))
 
 
 def validar_linha(row):
@@ -30,7 +30,7 @@ def validar_linha(row):
 
     # Validar Data 
     try:
-        datetime.strptime(str(row["acq_date"]), "%Y-%m-%d")
+        datetime.datetime.strptime(str(row["acq_date"]), "%Y-%m-%d")
     except (KeyError, ValueError):
         erros.append("data_invalida")
 

@@ -1,9 +1,11 @@
-from pathlib import Path
-
-import pandas as pd
+from depends.pipeline import normalizar
 import streamlit as st
 
 
-csv_path = Path(__file__).resolve().parent / "dados" / "fire_archive_M-C61_842915.csv"
-df = pd.read_csv(csv_path)
-st.dataframe(df)
+carregar_ficheiro = st.file_uploader('Coloca qualquer arquivo de MODIS ou VIIRS',type=['csv'])
+dados, relatorio = normalizar(carregar_ficheiro)
+df = st.dataframe(dados)
+
+st.text('Relatorios')
+
+rel = st.dataframe(relatorio)
