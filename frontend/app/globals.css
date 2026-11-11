@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+/* Tokens do FOCAFIRE (Tailwind v4: tema em CSS) */
+@theme {
+  --font-sans: var(--font-urbanist), system-ui, sans-serif;
+  --color-ink: #201b18;
+  --color-fire-300: #ffb35c;
+  --color-fire-400: #ffa445;
+  --color-fire-500: #f2701a;
+  --color-modis: #ffc247;
+  --color-viirs: #5fe3f0;
+  --color-heat-1: #6b3320;
+  --color-heat-2: #a4411f;
+  --color-heat-3: #e0561f;
+  --color-heat-4: #ff8a2a;
+  --color-heat-5: #ffd166;
+  --radius-glass: 32px;
+}
+
+html, body { height: 100%; background: #201b18; color: #fff; }
+body { font-family: var(--font-urbanist), system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+@layer components {
+  /* Vidro claro (botões, pílulas) */
+  .glass {
+    @apply text-white border border-white/20;
+    background: linear-gradient(150deg, rgba(255,255,255,.20), rgba(255,255,255,.07));
+    -webkit-backdrop-filter: blur(26px) saturate(160%);
+    backdrop-filter: blur(26px) saturate(160%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 20px 50px rgba(0,0,0,.35);
+  }
+  /* Vidro escuro (painéis grandes) */
+  .glass-panel {
+    @apply text-white border border-white/20;
+    background: linear-gradient(150deg, rgba(58,40,30,.64), rgba(22,15,12,.56));
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    backdrop-filter: blur(28px) saturate(160%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 28px 70px rgba(0,0,0,.45);
+  }
+  .glass-inset { @apply border border-white/10; background: rgba(255,255,255,.09); }
+  .btn-fire {
+    @apply font-extrabold cursor-pointer;
+    background: linear-gradient(160deg, #FFA445, #F2701A);
+    color: #1b0f06;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 10px 28px rgba(242,112,26,.38);
+  }
+  .focus-ring { @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fire-300; }
+}
+
+/* Leaflet: fundo e controlos discretos */
+.leaflet-container { background: #0a1b22; font-family: inherit; }
+.leaflet-control-attribution { background: rgba(0,0,0,.45) !important; color: #ddd !important; font-size: 10px; }
+.leaflet-control-attribution a { color: #ffd070 !important; }
+.diamond { width: 12px; height: 12px; background: #5fe3f0; transform: rotate(45deg); box-shadow: 0 0 10px rgba(95,227,240,.8); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
