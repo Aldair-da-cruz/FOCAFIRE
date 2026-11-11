@@ -12,7 +12,7 @@ LON_MAX = os.getenv("LON_MAX")
 def validar_linha(row):
     erros = []
 
-    # --- Latitude ---
+    #  Validar Latitude 
     try:
         lat = float(row["latitude"])
         if not (LAT_MIN <= lat <= LAT_MAX):
@@ -20,7 +20,7 @@ def validar_linha(row):
     except (KeyError, TypeError, ValueError):
         erros.append("latitude_ausente_ou_invalida")
 
-    # --- Longitude ---
+    # Validar Longitude 
     try:
         lon = float(row["longitude"])
         if not (LON_MIN <= lon <= LON_MAX):
@@ -28,7 +28,7 @@ def validar_linha(row):
     except (KeyError, TypeError, ValueError):
         erros.append("longitude_ausente_ou_invalida")
 
-    # --- Data ---
+    # Validar Data 
     try:
         datetime.strptime(str(row["acq_date"]), "%Y-%m-%d")
     except (KeyError, ValueError):
